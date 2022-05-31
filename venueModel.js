@@ -2,6 +2,20 @@ import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
 
+const pointSchema = new Schema({
+  location: {
+    type: {
+      type: String, // Don't do `{ location: { type: String } }`
+      enum: ["Point"], // 'location.type' must be 'Point'
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
+});
+
 const VenueSchema = new Schema({
   _id: String,
   name: String,

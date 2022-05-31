@@ -1,5 +1,4 @@
 import Venue from "./venueModel.js";
-import { sanitizeAddress } from "./venueFormatAddress.js";
 
 const getNoLatLangs = async () => {
   try {
@@ -8,12 +7,7 @@ const getNoLatLangs = async () => {
       location: { $exists: false },
       address: { $ne: null },
     });
-    // extracts the ID and postcode from the document
-    const newDocuments = documents.map((document) => [
-      document._id,
-      sanitizeAddress(document.address),
-    ]);
-    return newDocuments;
+    return documents;
   } catch (error) {
     console.log(error);
   }
@@ -22,9 +16,11 @@ const getNoLatLangs = async () => {
 const updateDocumentWithLocation = async (documentId, lat, long) => {
   const newFields = {
     location: {
+      type: "Point",
       coordinates: [lat, long],
     },
   };
+  console.log(newFields);
   await Venue.findByIdAndUpdate(documentId, newFields);
 };
 

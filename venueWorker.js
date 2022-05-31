@@ -1,26 +1,32 @@
 import { getNoLatLangs, updateDocumentWithLocation } from "./venueQueries.js";
 import { fetchLatLangs } from "./venueFetchLatLangs.js";
+import formatLatLangResults from "./formatLatLongResults.js";
 
 const venueWorker = async () => {
   try {
-    const documents = await getNoLatLangs();
-    // const [documentId, postcode] = documents[0];
-    // console.log(documentId, postcode);
-    // const { lat, long } = await fetchLatLangs(postcode);
-    // await updateDocumentWithLocation(documentId, lat, long);
+    const documents = await formatLatLangResults(await getNoLatLangs());
+    const promiseArr = [];
     documents.forEach((document) => {
-      //   console.log(document);
-      //   if (document.postcode !== null) {
-      //     doTask(document);
-      //   }
+      const postcode = document[1];
+      if (postcode !== null) {
+        promiseArr.push(doTask(document));
+      }
     });
-  } catch (error) {}
+    return promiseArr;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 async function doTask([documentId, postcode]) {
-  const { lat, long } = await fetchLatLangs(postcode);
-  console.log(lat, long);
-  //   await updateDocumentWithLocation(documentId, lat, long);
+  const {
+    jsonResponse: { features },
+  } = await fetchLatLangs(postcode);
+  if (features.length !== 0) {
+    const [lat, long] = features[0].center;
+    console.log(lat, long);
+    await updateDocumentWithLocation(documentId, lat, long);
+  }
 }
 
 export { venueWorker };
