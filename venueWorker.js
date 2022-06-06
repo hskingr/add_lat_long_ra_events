@@ -24,7 +24,7 @@ async function doTask([documentId, postcode]) {
   } = await fetchLatLangs(postcode);
   if (features.length !== 0) {
     const [lat, long] = features[0].center;
-    console.log(lat, long);
+    console.log(documentId, lat, long);
     await updateDocumentWithLocation(documentId, lat, long);
   }
 }
