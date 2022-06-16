@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { venueWorker } from "./venueWorker.js";
 import "dotenv/config";
 
+let connectionDataString = "";
+
 if (process.env.NODE_ENV === "development") {
   connectionDataString = process.env.MONGODB_CONNECTION_STRING_DEV;
 } else if (process.env.NODE_ENV === "production") {
