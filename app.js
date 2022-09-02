@@ -5,6 +5,16 @@ import schedule from "node-schedule";
 
 let connectionDataString = "";
 
+const main = async () => {
+  try {
+    await mongoose.connect(connectionDataString);
+    const promiseArray = await venueWorker();
+    await Promise.all(promiseArray);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 if (process.env.NODE_ENV === "development") {
   connectionDataString = process.env.MONGODB_CONNECTION_STRING_DEV;
   main(connectionDataString);
@@ -15,14 +25,3 @@ if (process.env.NODE_ENV === "development") {
     main(connectionDataString);
   });
 }
-
-const main = async () => {
-  try {
-    await mongoose.connect(connectionDataString);
-    const promiseArray = await venueWorker();
-    await Promise.all(promiseArray);
-  } catch (error) {
-    console.log(error);
-  }
-};
-main();
