@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "development") {
 } else if (process.env.NODE_ENV === "production") {
   connectionDataString = process.env.MONGODB_CONNECTION_STRING_PROD;
   main(connectionDataString);
-  schedule.scheduleJob({ hour: 3 }, () => {
-    main(connectionDataString);
-  });
+  // schedule.scheduleJob({ hour: 3 }, () => {
+  //   main(connectionDataString);
+  // });
 }
