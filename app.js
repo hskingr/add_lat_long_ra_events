@@ -12,6 +12,9 @@ const main = async () => {
     await Promise.all(promiseArray);
   } catch (error) {
     console.log(error);
+  } finally {
+    console.log(`Finished`);
+    await mongoose.disconnect();
   }
 };
 
