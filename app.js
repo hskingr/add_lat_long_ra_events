@@ -7,10 +7,10 @@ let connectionDataString = "";
 
 const main = async () => {
   try {
-    await mongoose.connect(connectionDataString);
     console.log(
       `Attempting Connection to Database with ${connectionDataString}`
     );
+    await mongoose.connect(connectionDataString);
     const db = mongoose.connection;
     if (db.readyState === 1) {
       console.log(`Connected to Database`);
