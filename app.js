@@ -8,8 +8,17 @@ let connectionDataString = "";
 const main = async () => {
   try {
     await mongoose.connect(connectionDataString);
-    const promiseArray = await venueWorker();
-    await Promise.all(promiseArray);
+    console.log(
+      `Attempting Connection to Database with ${connectionDataString}`
+    );
+    const db = mongoose.connection;
+    if (db.readyState === 1) {
+      console.log(`Connected to Database`);
+      const promiseArray = await venueWorker();
+      await Promise.all(promiseArray);
+    } else {
+      console.log(`Not Connected to Database`);
+    }
   } catch (error) {
     console.log(error);
   } finally {
